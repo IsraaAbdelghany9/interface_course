@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+
+
+
+
+
+  <rosparam file="$(find robot_controller)/config/controllers.yaml" command="load"/>
+  <rosparam file="$(find robot_controller)/config/joint_limits.yaml" command="load"/>
+
+      <!-- change pkg name according to your robot description launch file -->
+  <include file="$(find robot_controller)/launch/robot_discription_final.launch"/>
+  
+  <node name="robot_hardware_interface" pkg="robot_controller" type="robot_hardware_interface_node" output="screen">
+     <remap from="/mobile_robot/mobile_base_controller/cmd_vel" to="/cmd_vel"/>
+      <remap from="/mobile_robot/mobile_base_controller/odom" to="/odom"/>
+  </node>
+  
+
+
+  
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="
+        	/mobile_robot/joints_update
+            /mobile_robot/mobile_base_controller" >
+  </node>
+  
+</launch>
